@@ -62,10 +62,15 @@ export default function LoginPage() {
           <input className="w-full rounded border p-3 text-black bg-gray-50 outline-none focus:border-emerald-500" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
         <div>
-          <label className="block text-sm font-semibold mb-1">Password</label>
+          <div className="flex justify-between items-center mb-1">
+            <label className="block text-sm font-semibold">Password</label>
+            <Link href="/forgot-password" className="text-xs text-emerald-600 font-semibold hover:underline">Forgot password?</Link>
+          </div>
           <input className="w-full rounded border p-3 text-black bg-gray-50 outline-none focus:border-emerald-500" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
+        
         {error && <p className="text-sm text-red-600 font-semibold">{error}</p>}
+        
         <button className="w-full rounded-lg bg-emerald-600 py-3 text-white font-bold hover:bg-emerald-700 transition">Continue</button>
       </form>
 

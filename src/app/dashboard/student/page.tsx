@@ -1,9 +1,9 @@
+import { Suspense } from "react";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { connection } from "next/server";
-import { Suspense } from "react";
 
 async function StudentDashboardContent() {
   await connection();
@@ -38,7 +38,9 @@ async function StudentDashboardContent() {
     .order("created_at", { ascending: false });
 
   return (
-    <main className="mx-auto max-w-4xl space-y-6 p-6 text-gray-900 min-h-screen">
+    <main className="mx-auto max-w-3xl space-y-6 p-6 text-gray-900 min-h-screen">
+      
+      {/* Header */}
       <div className="flex items-center justify-between border-b pb-4">
         <h1 className="text-2xl font-bold">My Dashboard</h1>
         <form action="/auth/signout" method="post">
@@ -46,43 +48,37 @@ async function StudentDashboardContent() {
         </form>
       </div>
       
-      {/* MY PROFILE DETAILS CARD */}
+      {/* Profile Card */}
       <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <div className="flex justify-between items-start mb-6 border-b pb-4">
+        <div className="flex justify-between items-start">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-700">
-              {(profile?.full_name || "S").charAt(0)}
+              {(profile?.full_name || user.email || "S").charAt(0).toUpperCase()}
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-blue-700">{profile?.full_name || user.email}</h2>
-              <p className="text-gray-600 font-medium capitalize">Role: {profile?.role || "Student"}</p>
+              <h2 className="text-2xl font-bold text-blue-700">{profile?.full_name || "Student"}</h2>
+              <p className="text-gray-600 font-medium">{user.email}</p>
+              <p className="text-sm text-gray-500 mt-1">📞 {profile?.phone || "No phone added"}</p>
             </div>
           </div>
           <Link 
-            href="/post-requirement" 
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition"
+            href="/dashboard/student/profile" 
+            className="text-sm rounded border border-blue-600 text-blue-700 px-4 py-2 font-semibold hover:bg-blue-50 transition"
           >
-            + Post New Requirement
+            Edit Profile
           </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-sm font-bold text-gray-500 uppercase mb-2">Contact Info</h3>
-            <p className="text-gray-800"><strong>Email:</strong> {user.email}</p>
-            <p className="text-gray-800"><strong>Phone:</strong> {profile?.phone || "Not provided"}</p>
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-gray-500 uppercase mb-2">Location Details</h3>
-            <p className="text-gray-800"><strong>Timezone:</strong> {profile?.timezone || "Asia/Kolkata"}</p>
-            <p className="text-gray-800"><strong>Country:</strong> {profile?.country_code || "IN"}</p>
-          </div>
         </div>
       </div>
 
-      {/* Requirements List */}
+      {/* Requirements Section */}
       <div className="rounded-lg border bg-white p-6 shadow-sm">
-        <h2 className="text-xl font-bold mb-4">My Learning Needs</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">My Learning Needs</h2>
+          <Link href="/post-requirement" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
+            + Post New
+          </Link>
+        </div>
+
         <div className="space-y-4">
           {requirements && requirements.length > 0 ? (
             requirements.map((req: any) => (
