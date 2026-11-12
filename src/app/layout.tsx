@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Shikshak - Find the Best Tutors",
-  description: "Connect with top local and online tutors across India.",
+  description: "Connect with top local and online tutors across India and globally.",
 };
 
 export default function RootLayout({
@@ -18,12 +18,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex flex-col min-h-screen bg-gray-50`}>
+      <body className={`${inter.className} flex flex-col min-h-screen bg-slate-50`}>
         <Header />
         <div className="flex-1">
           {children}
         </div>
         <Footer />
+        
+        {/* PWA Service Worker Registration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );
