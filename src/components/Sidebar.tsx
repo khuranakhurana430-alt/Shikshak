@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import { X, Home, Search, FileText, LayoutDashboard, MessageSquare, LogOut, Settings } from "lucide-react";
+import { X, Home, Search, FileText, LayoutDashboard, MessageSquare, LogOut, Settings, Bell } from "lucide-react";
 
 export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [email, setEmail] = useState<string | null>(null);
@@ -70,6 +70,11 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                   <LayoutDashboard className="w-5 h-5 text-slate-400" /> My Dashboard
                 </Link>
                 
+                {/* NEW: Notifications Link */}
+                <Link href="/notifications" onClick={onClose} className="px-3 py-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-3 transition">
+                  <Bell className="w-5 h-5 text-slate-400" /> Notifications
+                </Link>
+
                 {role === "teacher" && (
                   <Link href="/dashboard/teacher/onboarding" onClick={onClose} className="px-3 py-3 rounded-xl bg-indigo-50/50 text-indigo-700 font-medium flex items-center gap-3 transition">
                     <Settings className="w-5 h-5 text-indigo-500" /> Teacher Onboarding

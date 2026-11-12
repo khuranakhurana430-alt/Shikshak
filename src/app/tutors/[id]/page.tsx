@@ -76,7 +76,7 @@ function TutorProfileContent() {
     // 2. Trigger the Email Notification
     try {
       // Fetch the teacher's email and the student's name to pass to the API
-      const { data: teacherProfile } = await supabase
+      const { data: teacherProfile, error: teacherError } = await supabase
         .from("profiles")
         .select("email, full_name")
         .eq("id", id)
@@ -98,6 +98,8 @@ function TutorProfileContent() {
             studentName: studentProfile?.full_name || "A Student",
           }),
         });
+      } else {
+        console.error("Teacher email not found in profile");
       }
     } catch (err) {
       console.error("Failed to send email notification", err);
@@ -241,7 +243,6 @@ function TutorProfileContent() {
           <div>
             <h2 className="text-xl font-bold text-slate-900 mb-6">Student Reviews</h2>
             
-            {/* Display Existing Reviews */}
             <div className="space-y-4 mb-10">
               {reviews.length > 0 ? (
                 reviews.map((review) => (
@@ -265,7 +266,6 @@ function TutorProfileContent() {
               )}
             </div>
 
-            {/* Review Submission Form */}
             {currentUser && (
               <div className="border-t border-slate-200 pt-8">
                 <h3 className="text-lg font-bold text-slate-900 mb-4">Leave a Review</h3>
